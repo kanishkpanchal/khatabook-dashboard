@@ -1,0 +1,354 @@
+<%- include partials/header.ejs %>
+<section id="header">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <li>
+                    <a class="nav-item nav-link" href="#" id="users-page">User<span class="sr-only">(current)</span></a>
+                </li>
+                <li>
+                    <a class="nav-item nav-link" href="#" id="images-history-page" onClick="getImages()">Images
+                        History</a>
+                </li>
+                <li><a class="nav-item nav-link" href="#" id="videos-history-page">Videos History</a></li>
+                <li><a class="nav-item nav-link" href="/dashboard?token=<%=token%>" id="upload-page">Upload</a></li>
+                <li><a class="nav-item nav-link pull-right" href="#" id="logout">Logout</a></li>
+                <input type="hidden" name="token" id="token" value="<%= token %>">
+            </div>
+        </div>
+    </nav>
+</section>
+<section id="users-section" class="nav-section">
+    <div class="container m-auto pt-3">
+        <h3 class="text-center">Dashboard Users</h3>
+        <div class="row">
+            <div class="col">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary mb-2 mt-2 pull-left" data-toggle="modal"
+                    data-target="#addUserModal">
+                    Add New User
+                </button>
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <!-- <th scope="col">Password</th> -->
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach( (user, index) => { %>
+                <tr>
+                    <th scope="row"><%= index + 1 %></th>
+                    <td><%= user.name %></td>
+                    <td><%= user.email %></td>
+                    <!-- <td><%= user.password %></td> -->
+                    <td>
+                        <button type="submit" class="edit-btn" data-toggle="modal" data-target="#addUserModal"
+                            data-name="<%= user.name %>" data-userid="<%= user._id %>" data-email="<%= user.email %>"
+                            data-password="<%= user.password %>">
+                            <i class="fa fa-pencil"></i>
+                        </button>
+                    </td>
+                    <td>
+                        <form action="/admin/users/<%= user._id %>?_method=DELETE&token=<%=token%>" data-type="users"
+                            class="delete-user" method="POST">
+                            <button type="submit" data-confirm="Are you sure ??" class="del-btn remove">X</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+    </div>
+    <hr>
+
+    <!-- User Modal -->
+
+    <div class="modal fade" id="addUserModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add New User</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/admin" id="modal-form" method="POST">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" required class="form-control" name="name" id="name"
+                                placeholder="Enter name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" required class="form-control" name="email" id="email"
+                                placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" required class="form-control" name="password" id="password-field"
+                                placeholder="Password">
+                            <span toggle="#password-field"
+                                class="fa fa-fw fa-eye field-icon toggle-password mr-2"></span>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Add User</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<section id="image-history" class="nav-section" style="display: none">
+    <div class="container m-auto pt-3">
+        <h3 class="text-center">Image Upload History</h3>
+        <hr>
+        <div class="row m-2 p-2">
+            <div class="col">
+                <label for="startDate">Start Date</label>
+                <input type="date" name="startDate" id="startDate">
+            </div>
+            <div class="col">
+                <label for="endDate">End Date</label>
+                <input type="date" name="endDate" id="endDate">
+            </div>
+            <div class="col">
+                <button id="filterImagesBtn" class="btn btn-primary pull-right">Refresh</button>
+            </div>
+        </div>
+        <hr>
+        <table class="table display" id="imagesTable">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Likes</th>
+                    <th scope="col">Shares</th>
+                    <th>UploadedBy</th>
+                    <th>UploadedOn</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody id="images-body">
+
+            </tbody>
+
+        </table>
+
+    </div>
+</section>
+<section id="video-history" class="nav-section" style="display: none">
+    <div class="container m-auto pt-3">
+        <h3 class="text-center">Video Upload History</h3>
+        <div class="row">
+            <div class="col">
+                <!-- Button trigger modal -->
+                <!-- <button type="button" class="btn btn-primary mb-2 mt-2 pull-right" data-toggle="modal" data-target="#addUserModal">
+                        Add New User
+                    </button>                 -->
+            </div>
+        </div>
+        <table class="table" id="videoTable">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Video</th>
+                    <th scope="col">Likes</th>
+                    <th scope="col">Shares</th>
+                    <th>UploadedBy</th>
+                    <th>UploadedOn</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% videos.forEach( (videoObj, index) => { %>
+                <tr>
+                    <th scope="row"><%= index + 1 %></th>
+                    <td class="video-preview-small">
+                        <video controls src="<%= videoObj.url %>">
+                    </td>
+                    <td><%= videoObj.likes %></td>
+                    <td><%= videoObj.shares %></td>
+                    <td><% if(videoObj.uploadedBy) { %>
+                        <%= videoObj.uploadedBy.email %>
+                        <% } %>
+                    </td>
+                    <td>
+                        <%= new Date(videoObj.createdAt).toString().substr(0,24)%>
+                    </td>
+                    <td>
+                        <form action="/admin/videos/<%= videoObj._id %>?_method=DELETE&token=<%=token%>"
+                            class="delete-video" data-type="videos" method="POST">
+                            <button type="submit" data-confirm="Are you sure ??" class="del-btn remove">X</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+    </div>
+</section>
+
+
+<%- include partials/footer.ejs %>
+
+
+
+<script>
+    let token;
+
+    $(() => {
+        const params = getUrlParams();
+        token = params.token;
+
+        $('table.filter').DataTable();
+    });
+
+    $('button.remove').on('click', (e) => {
+        e.preventDefault();
+        if (confirm('Are you sure ?')) {
+            e.target.parentElement.submit();
+        }
+    });
+
+    $('#addUserModal').on('show.bs.modal', function (e) {
+
+        let name = $(e.relatedTarget).data('name');
+        let email = $(e.relatedTarget).data('email');
+        let password = $(e.relatedTarget).data('password');
+        let userId = $(e.relatedTarget).data('userid');
+
+        $modal = $(e.currentTarget);
+
+        if (name) {
+
+            $modal.find('.modal-title').text('Edit User');
+            $modal.find('button[type="submit"').text("Save");
+            $modal.find('form').attr('action', '/admin/users/' + userId + "/?token=" + token);
+
+        } else {
+            $modal.find('.modal-title').text('Add User');
+            $modal.find('button[type="submit"').text("Add User");
+            $modal.find('form').attr('action', '/admin/?token=' + token);
+        }
+
+        $modal.find('input[name="name"]').val(name);
+        $modal.find('input[name="email"]').val(email);
+        $modal.find('input[name="password"]').val(password);
+    });
+
+    // Image Section Show
+    $('#users-page').on('click', () => {
+        $('.nav-section').hide();
+        $('#users-section').show();
+    });
+
+    $('#images-history-page').on('click', () => {
+        $('.nav-section').hide();
+        $('#image-history').show();
+    });
+
+    // Video Section Show
+    $('#videos-history-page').on('click', () => {
+        $('.nav-section').hide();
+        $('#video-history').show();
+    });
+
+</script>
+
+<script>
+
+    const populateImages = (images) => {
+        $ImagesTable = $('tbody#images-body');
+
+        $ImagesTable.html('');
+
+        const today = new Date().toISOString().substr(0, 10);
+
+        if ($('input[type="date"]').val() == "") {
+            $('input[type="date"]').val(today);
+        }
+
+
+        images.forEach((imageObj, index) => {
+
+            $ImagesTable.append(`
+            <tr>
+                <th scope="row">${index + 1}</th>
+                <td class="image-preview-small">
+                    <img src=${imageObj.url}>                                
+                </td>
+                <td>${imageObj.likes}</td>
+                <td>${imageObj.shares}</td>
+                <td>${imageObj.uploadedBy.email}</td>
+                <td>
+                    ${new Date(imageObj.createdAt).toString().substr(0, 24)}
+                </td>
+                <td>
+                    <form action="/admin/images/${imageObj._id}?_method=DELETE&token=${token}" data-type="images" class="delete-image" method="POST">
+                        <button type="submit" data-confirm = "Are you sure ??" class="del-btn remove">X</button>
+                    </form>
+                </td>
+            </tr>
+            `);
+        });
+
+
+        $('table#imagesTable').DataTable();
+
+
+    }
+
+    const getImages = async (startDate = null, endDate = null) => {
+        console.log(startDate);
+        console.log(endDate);
+
+        let url = '/admin/images/?';
+
+        if (startDate && endDate) {
+
+            startDate = moment(new Date($('#startDate').val())).startOf('day').toISOString();
+            endDate = moment(new Date($('#endDate').val())).endOf('day').toISOString()
+
+            url += `&startDate=${startDate}&endDate=${endDate}&token=${token}`;
+        } else {
+            url += 'token=' + token;
+        }
+
+        console.log(url);
+
+        const response = await $.get(url);
+        const images = response.data.images;
+        populateImages(images);
+    }
+
+
+    $('#filterImagesBtn').on('click', () => {
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+
+        getImages(startDate, endDate);
+
+    }
+    );
+
+</script>
+
+</body>
+
+</html>

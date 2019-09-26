@@ -1,0 +1,400 @@
+<%- include partials/header.ejs %>
+<section id="header">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="#" id="image-page">Image</a>
+        <a class="nav-item nav-link" href="#" id="video-page">Video</a>
+        <% if(info.role === 'admin') { %>
+        <a class="nav-item nav-link" href="/admin?token=<%=token%>" id="admin-page">Admin Page</a>
+        <% } %>
+        <a class="nav-item nav-link pull-right" id="logout" href="#">Logout</a>
+      </div>
+      <input type="hidden" id="token" value="<%= token %>">
+    </div>
+  </nav>
+</section>
+<section class="mb-5" id="image-section">
+  <div class="container">
+    <div class="row d-flex">
+
+    </div>
+    <form id="upload-image-form" action="#" enctype="multipart/form-data">
+      <div class="row mb-5 mt-5">
+        <div class="col">
+          <div class="row">
+            <div class="col">
+              <div class="btn-group form-group dropright">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  Insert Image
+                </button>
+                <div class="dropdown-menu">
+                  <a href="#" class="dropdown-item upload-btn-wrapper">
+                    <span class="mr-2"><i class="fas fa-desktop"></i></span>Upload From Computer
+                    <input type="file" name="photo" accept="image/*" id="photo-preview" onchange="readURL(event)">
+                  </a>
+                  <a href="#" class="dropdown-item upload-btn-wrapper">
+                    <span class="mr-2"><i class="fab fa-google-drive"></i></span>Upload From Drive
+                    <input type="file" name="photo" accept="image/*" id="photo-preview" onchange="readURL(event)">
+                  </a>
+                  <a href="#" class="dropdown-item upload-btn-wrapper">
+                    <span class="mr-2 pull-left" data-toggle="modal" data-target="#addImageUrlModal">
+                      <i class="fas fa-link mr-2"></i>Upload From Url</span>
+                  </a>
+                  <!-- <a href="#" class="dropdown-item">
+                    <span class="mr-2"><i class="fab fa-google-drive"></i></span>Drive
+                  </a>
+                  <a href="#" class="dropdown-item">
+                    <span class="mr-2"><i class="fas fa-link"></i></span>URL
+                  </a>                   -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row" style="display: none" id="image-edit-box">
+            <div class="col form-group">
+              <input type="text" class="form-control" id="name" placeholder="Enter Business Name"><br>
+            </div>
+            <div class="col form-group">
+              <input type="color" class="form-control" name="hexColorCode" id="text-color" value="#000000"><br>
+            </div>
+            <div class="col form-group">
+              <button class="btn btn-primary form-control" id="upload-image">Upload Image</button>
+              <input type="hidden" name="xCoordinate" id="xCoordinate">
+              <input type="hidden" name="yCoordinate" id="yCoordinate">
+              <input type="hidden" name="url" id="url">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          Preview Screen
+          <div class="preview-wrapper">
+            <div class="preview">
+              <img alt="preview-image" id="preview-image" name="previewImage" style="z-index: -1">
+              <h3 id="preview-name"></h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <!-- Image Url Modal -->
+  <div class="modal fade" id="addImageUrlModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Enter Url</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="modal-form">
+            <!-- <form action="/dashboard"  method="GET"> -->
+            <div class="form-group">
+              <label for="ImageUrl">Image Url</label>
+              <input type="url" required class="form-control" name="imageurl" id="imageurl"
+                placeholder="Enter the Url Link" accept="image/*" onclick="readUserURL(event)" />
+              <!-- <input type="file" class="form-control" accept="image/*"
+                style="display: none"/> -->
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary" onclick="document.getElementById('imageurl').click()">Add
+                Url</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section class="mb-5" id="video-section" style="display: none">
+  <div class="container">
+    <form id="upload-video-form" action="#" enctype="multipart/form-data">
+      <div class="row mb-5 mt-5">
+        <div class="col">
+          <div class="btn-group dropright">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+              aria-expanded="false">
+              Insert Video
+            </button>
+            <div class="dropdown-menu">
+              <a href="#" class="dropdown-item upload-btn-wrapper">
+                <span class="mr-2"><i class="fas fa-desktop"></i></span>Upload From Computer
+                <input type="file" name="video" accept="video/*" id="photo-preview" onchange="readURL(event)">
+              </a>
+              <a href="#" class="dropdown-item upload-btn-wrapper">
+                <span class="mr-2"><i class="fab fa-google-drive"></i></span>Upload From Drive
+                <input type="file" name="video" accept="video/*" id="photo-preview" onchange="readURL(event)">
+              </a>
+              <a href="#" class="dropdown-item upload-btn-wrapper">
+                <span class="mr-2 pull-left" data-toggle="modal" data-target="#addVideoUrlModal">
+                  <i class="fas fa-link mr-2"></i>Upload From Url</span>
+              </a>
+              <!-- <a href="#" class="dropdown-item">
+                  <span class="mr-2"><i class="fab fa-google-drive"></i></span>Drive
+                </a>
+                <a href="#" class="dropdown-item">
+                  <span class="mr-2"><i class="fas fa-link"></i></span>URL
+                </a>                   -->
+            </div>
+          </div>
+          <div>
+            <button class="btn btn-primary mt-5" style="display: none" id="upload-video">Upload Video</button>
+            <input name="videoUrl" type="hidden" id="videoUrl">
+          </div>
+        </div>
+        <div class="col video-wrapper">
+          <video controls autoplay></video>
+        </div>
+    </form>
+  </div>
+
+  <!-- Video Url Modal -->
+  <div class="modal fade" id="addVideoUrlModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Enter Video Url</h5>
+          <button type="button" class="close" data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="modal-form">
+            <!-- <form action="/dashboard"  method="GET"> -->
+            <div class="form-group">
+              <label for="VideoUrl">Video Url</label>
+              <input type="url" required class="form-control" name="videoUrlLink" id="videoUrlLink"
+                placeholder="Enter the Video Url Link" accept="video/*" onclick="readUserVideoURL(event)"/>
+              <!-- <input type="file" class="form-control" accept="image/*"
+                  style="display: none"/> -->
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary" onclick="document.getElementById('videoUrlLink').click()">Add
+                Url</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include partials/footer.ejs %>
+<script>
+
+  function getUrlVars() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+      vars[key] = value;
+    });
+    return vars;
+  }
+
+  $(() => {
+    const params = getUrlVars();
+    if (params.default === 'video') {
+      $('#video-page').click();
+    }
+    localStorage.setItem('token', params.token);
+    // if (window.location.href.indexOf('?') > -1) {
+    //   history.pushState('', document.title, window.location.pathname);
+    // }
+  });
+  // const token = localStorage.token;
+  const token = $('#token').val();
+
+  $('#logout').click(() => {
+    localStorage.clear();
+    window.location.replace(window.location.origin);
+  });
+
+  // image upload
+
+  $('#upload-image').on('click', function (event) {
+    event.preventDefault();
+
+    const imageId = Date.now();
+
+    const url = document.getElementById('imageurl').value;
+
+    console.log('URL' + url);
+
+    if (url !== null && url !== undefined && url !== "") {
+      let action = `/dashboard/upload-image-url/${imageId}?token=${token}`;
+
+      const pos = getNamePosition();
+
+      $('#xCoordinate').val(pos.x);
+      $('#yCoordinate').val(pos.y);
+      $("#url").val(url);
+
+      $("#upload-image-form").attr('action', action);
+      $("#upload-image-form").attr('METHOD', "POST");
+      $('#upload-image-form').submit();
+    }
+
+    else {
+      let action = `/dashboard/upload-image/${imageId}/?token=${token}`;
+
+      const pos = getNamePosition();
+
+      $('#xCoordinate').val(pos.x);
+      $('#yCoordinate').val(pos.y);
+
+      $("#upload-image-form").attr('action', action);
+      $("#upload-image-form").attr('METHOD', "POST");
+      $('#upload-image-form').submit();
+
+    }
+
+  });
+
+  // UPLOAD VIDEO
+
+
+  $('#upload-video').on('click', async (event) => {
+    event.preventDefault();
+    const videoId = Date.now();
+
+    const url = document.getElementById('videoUrlLink').value;
+    console.log("func" + url);
+
+    if (url !== null && url !== undefined && url !== "") {
+
+      let action = `/dashboard/upload-video-url/${videoId}/?token=${token}`;
+
+      $("#videoUrl").val(url);
+      $("#upload-video-form").attr('action', action);
+      $("#upload-video-form").attr('METHOD', "POST");
+
+      $('#upload-video-form').submit();
+
+    }
+    else {
+      let action = `/dashboard/upload-video/${videoId}/?token=${token}`;
+
+      $("#upload-video-form").attr('action', action);
+      $("#upload-video-form").attr('METHOD', "POST");
+
+      $('#upload-video-form').submit();
+
+    }
+  });
+
+
+  $('#name').on("keyup", (e) => {
+    const name = e.currentTarget.value;
+    $previewName = $("#preview-name")
+    $previewName.text(name);
+    const textColor = $("#text-color")[0].value;
+
+    $previewName.css("color", textColor);
+    const pos = getNamePosition();
+    console.log(pos);
+  });
+
+  const getNamePosition = () => {
+    const h = $('#preview-name').parent().height();
+    const w = $('#preview-name').parent().width();
+    const pos = $('#preview-name').position();
+    const len = $('#preview-name').width();
+
+    const x = (pos.left + len / 2) / w;
+    const y = (h - pos.top) / h;
+    return { x, y };
+  }
+
+  $("#text-color").on("change", (e) => {
+    const textColor = $("#text-color")[0].value;
+    $("#preview-name").css("color", textColor)
+  });
+
+
+  function readURL(event) {
+    console.log('----- EVENT -----');
+
+    console.log(event);
+
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+      var file = event.target.files[0];
+
+      console.log(file);
+
+      if (file.type.substr(0, 5) === 'video') {
+        var url = window.URL.createObjectURL(file);
+        $('video').attr('src', url);
+        $('#upload-video').show();
+      } else {
+        $('#preview-image').attr("src", e.target.result);
+        $('#preview-name').draggable({ containment: "parent" });
+        $('#preview-name').position()
+        $("#image-edit-box").css("display", "flex");
+        // $("#preview-name").text("Business Name");
+        $("#preview-name").css("color", $("#text-color").val());
+      }
+      $("div.dropdown-menu").removeClass("show");
+      $(".flash-message").css("display", "none");
+
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+
+  function readUserURL(event) {
+
+    var url = event.target.value;
+
+    console.log(url);
+
+    $('#preview-image').attr("src", url);
+    $('#preview-name').draggable({ containment: "parent" });
+    $('#preview-name').position()
+    $("#image-edit-box").css("display", "flex");
+    // $("#preview-name").text("Business Name");
+    $("#preview-name").css("color", $("#text-color").val());
+
+    $("div.dropdown-menu").removeClass("show");
+    $(".flash-message").css("display", "none");
+    // reader.readAsDataURL(event.target.files[0]);
+  }
+
+  function readUserVideoURL(event) {
+
+    var videourl = event.target.value;
+    console.log('video' + videourl);
+    $('video').attr('src', videourl);
+    $('#upload-video').show();
+  }
+
+
+
+  // Image Section Show
+  $('#image-page').on('click', () => {
+    $('#image-section').show();
+    $('#video-section').hide();
+  });
+
+
+  // Video Section Show
+  $('#video-page').on('click', () => {
+    $('#image-section').hide();
+    $('#video-section').show();
+  });
+
+
+  // LOGOUT
+
+
+</script>

@@ -1,0 +1,31 @@
+<%- include partials/header.ejs %>
+
+<section class="m-2 p-2 m-md-5 p-md-5">
+    <div class="container login-box">
+        <div class="p-3">
+            <form action="/login" method ="POST">
+                <div class="form-group">
+                    <label for="email">Email address</label>
+                    <input type="email" class="form-control <% if (flash){ %>error-box <% } %>"
+                        name="email" id="email" required placeholder="Enter email">                        
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control <% if (flash) { %>error-box <% } %>" 
+                        name="password" id="password" required placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-khb m-auto">Login</button>
+                </div>
+            </form>
+        </div>        
+    </div>
+            
+</section>
+    
+<%- include partials/footer.ejs %>
+<script>
+    setTimeout( function(){
+        $('.error-box').removeClass('error-box')
+    }, 2000);
+</script>

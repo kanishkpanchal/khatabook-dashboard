@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.18/fh-3.1.4/r-2.2.2/sc-2.0.0/datatables.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/assets/styles.css">
+    <script src="https://kit.fontawesome.com/bc07583c88.js"></script>
+    <title>Khatabook Images Dashboard</title>
+  </head>
+  <body>
+      <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1"><h2 class="color-khb">Khatabook</h2></span>
+        <span class="mb-0"><strong>Aapke Business Ka Saathi</strong></span>
+      </nav>
+      <% if(flash) { %>
+        <div class="flash-message mt-2 mb-4">
+          <p class="mt-2 pt-2"><%= flash %></p>
+        </div>
+      <% } %>

@@ -1,0 +1,153 @@
+.color-khb {
+  color: #aa0000;
+}
+
+.btn-khb {
+  background: #aa0000;
+  color: white;
+}
+
+.error {
+  color: red;
+}
+
+.error-box {
+  border: 1px solid red;
+}
+
+.flash-message {
+  border: 1px solid #f3c198;
+  background: #f3c198;
+  text-align: center;
+  margin: 0 auto;
+  max-width: 400px;
+  -webkit-animation: fade ease-in-out;
+          animation: fade ease-in-out;
+}
+
+.remove {
+  color: red;
+  font-weight: 800;
+}
+
+.edit-btn, .del-btn {
+  background: white;
+  border: none;
+}
+
+.preview-wrapper .preview {
+  border: 1px solid grey;
+  height: 740px;
+  width: 1000px;
+}
+
+.preview-wrapper .preview img {
+  height: 100%;
+  width: 100%;
+}
+
+.preview-wrapper .preview #preview-name {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  position: relative;
+  /*
+            This doesn't work
+            margin-left: -25%;
+            margin-top: -25%;
+            */
+  font-weight: 600;
+  opacity: 0.7;
+  color: black;
+  text-align: center;
+}
+
+#draggable {
+  width: 100px;
+  height: 100px;
+  background: #ccc;
+}
+
+.upload-btn-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.upload-btn-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+
+.login-box {
+  max-width: 500px;
+  background: white;
+  border: 1px solid #eeeeee;
+}
+
+body {
+  background: #fefefe;
+}
+
+.form-group {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+.field-icon {
+  float: right;
+  margin-left: -25px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 2;
+  font-size: smaller;
+}
+
+.name-wrapper {
+  border: 1px solid grey;
+  max-width: 100px;
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+.video-wrapper {
+  max-width: 100%;
+}
+
+.video-wrapper video {
+  width: inherit;
+}
+
+.hidden {
+  display: none;
+}
+
+.image-preview-small {
+  width: 150px;
+}
+
+.image-preview-small img {
+  width: inherit;
+}
+
+.video-preview-small {
+  width: 150px;
+}
+
+.video-preview-small video {
+  width: inherit;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
+}
+/*# sourceMappingURL=styles.css.map */
